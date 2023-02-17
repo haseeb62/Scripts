@@ -41,7 +41,7 @@ merge() {
   local y="${2}"
   echo "x"
   echo "y"
-  send_spade_command "\$intersect = \$${subgraph}_${x} &  \$${subgraph}_${y}"
+  send_spade_command "\$intersect = \$${subgraph}_$x &  \$${subgraph}_$y"
 
   local intersect_table_name=`echo "copy select value from spade_query_symbols where name=\$intersect to stdout;" | ${cli}`
   local v_intersect_size=`echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
@@ -99,7 +99,7 @@ main() {
   x=${nums[0]}
   for i in "${nums[@]:1}"; do
     echo "$x $i"
-    local result=$(merge ${x} ${i})
+    local result=$(merge $x $i)
   done
     done < ${merge_file}
 
