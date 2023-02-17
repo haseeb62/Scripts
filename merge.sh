@@ -45,8 +45,8 @@ merge() {
   local z=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
   
   echo "ez1=$z"
-  local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli})
-  local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli})
+  local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1)
+  local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}| tail -n 1)
 
 
   echo "ez2=$intersect_table_name"
