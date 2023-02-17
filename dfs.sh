@@ -54,8 +54,8 @@ send_spade_command(){
 
 
 dfs_runner(){
-    local uuid = "${1}"
-    local count = "${2}"
+    local uuid="${1}"
+    local count="${2}"
     echo "UUID: $uuid"
     echo "count : $count" 
     # send_spade_command "%$count = \"uuid\"=='$uuid'" #uuid
@@ -85,7 +85,7 @@ uuids="${uuids// /\\n}"
 while IFS= read -r uuid; do # looping over each UUID
     # Print each uuid
     echo "UUID: $uuid"
-    dfs_runner uuid count
+    dfs_runner $uuid $count
     # send_spade_command "%$count = \"uuid\"=='$uuid'" #uuid
     # send_spade_command "\$$count = \$base.getVertex(%$count)" #getVertex
     # send_spade_command "\$lineage_$count = \$base.getLineage(\$$count, 5,'d')" #$lineage 
