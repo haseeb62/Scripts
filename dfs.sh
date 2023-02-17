@@ -56,6 +56,7 @@ send_spade_command(){
 
 erase(){
   local count="${1}"
+  qeury_writer "erase %$count"
   qeury_writer "erase \$$count"
   qeury_writer "erase \$lineage_$count"
   qeury_writer "erase \$vertices_$count"
@@ -105,7 +106,7 @@ uuids="${uuids// /\\n}"
 while IFS= read -r uuid; do # looping over each UUID
     # Print each uuid
     echo "UUID: $uuid"
-    dfs_runner2 $uuid $count
+    dfs_runner $uuid $count
     count=$((count+1))
 done < <(echo "$uuids")
 

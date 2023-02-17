@@ -3,7 +3,7 @@ spade_bin="./SPADE/bin/spade"
 spade_cfg="./SPADE/cfg/spade.client.Control.config"
 Object_id_file_path="/home/vagrant/ObjectIDs"
 merge_file="./merging_vertex.txt"
-cli="./SPADE/bin/manage-quickstep.sh start --path /home/vagrant/quickstepdb -c"
+cli="./SPADE/bin/manage-quickstep.sh start --path /home/vagrant/quickstepdb -c"
 symbols="./spadesymbols.txt"
 subgraph="dfs"
 
