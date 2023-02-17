@@ -2,7 +2,7 @@
 spade_bin="./SPADE/bin/spade"
 spade_cfg="./SPADE/cfg/spade.client.Control.config"
 Object_id_file_path="/home/vagrant/ObjectIDs"
-merge_file="./merging_vertex.txt"
+merge_file="./merging_vertex1.txt"
 cli="./SPADE/bin/manage-quickstep.sh start --path /home/vagrant/quickstepdb -c"
 symbols="./spadesymbols.txt"
 subgraph="subgraph"
@@ -39,10 +39,10 @@ send_spade_command(){
 merge() {
   local x="${1}"
   local y="${2}"
-  send_spade_command "\$intersect_$x$y = \$${subgraph}_$x &  \$${subgraph}_$y"
+  send_spade_command "\$intersect = \$${subgraph}_$x &  \$${subgraph}_$y"
   local z=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
   echo "ez1=$z"
-  local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1)
+  local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1)
   local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}| tail -n 1)
 
 
@@ -55,12 +55,15 @@ merge() {
     return
   fi
 
-  # local x_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
-  # local y_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
+  local x_table_name=$(echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}| tail -n 1)
+  # $(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1)
+
+  local y_table_name=$(echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli} | tail -n 1)
   
-  # local v_x_size=`echo "copy select count(*) from ${x_table_name}_vertex to stdout;" | ${cli}`
-  # local v_y_size=`echo "copy select count(*) from ${y_table_name}_vertex to stdout;" | ${cli}`
+  local v_x_size=$(echo "copy select count(*) from ${x_table_name}_vertex to stdout;" | ${cli} | tail -n 1)
+  local v_y_size=$(echo "copy select count(*) from ${y_table_name}_vertex to stdout;" | ${cli} | tail -n 1)
   
+  echo "outputing size1 = $v_x_size size2 = $v_y_size"
   # local check1=0
   # local check2=0
   
