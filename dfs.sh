@@ -8,8 +8,6 @@ cmd_bin_logs_dir_path="/home/vagrant/trace_bins"
 spade_log_msg_str_that_signals_the_cdm_log_has_been_processed="Finished reading"
 dot_output_dir_path="/home/vagrant/trace_dots"
 input_vertex_set="../vertex_set.json"
-
-
 query_file="./cfg/spade.client.CommandLine.config"
 
 
@@ -74,6 +72,7 @@ qeury_writer(){
 
 
 dfs_runner(){
+  #L(V1) then find V(L(V1)) then find P(V(L(V1) then Union P(V(L(V1) with L(V1) and on this union call getSubgraph
   local uuid="${1}"
   local count="${2}"
   echo "UUID: $uuid"
@@ -102,7 +101,7 @@ uuids="${uuids//\"}"
 # replace the space with newline
 uuids="${uuids// /\\n}"
 
-#L(V1) then find V(L(V1)) then find P(V(L(V1) then Union P(V(L(V1) with L(V1) and on this union call getSubgraph
+
 while IFS= read -r uuid; do # looping over each UUID
     # Print each uuid
     echo "UUID: $uuid"

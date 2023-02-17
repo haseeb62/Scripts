@@ -39,56 +39,58 @@ send_spade_command(){
 merge() {
   local x = "${1}"
   local y = "${2}"
+  echo "x"
+  echo "y"
   send_spade_command("\$intersect = \$${subgraph}_${x} &  \$${subgraph}_${y}")
 
-  local intersect_table_name = `echo "copy select value from spade_query_symbols where name=\$intersect to stdout;" | ${cli}`
-  local v_intersect_size = `echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
+  # local intersect_table_name = `echo "copy select value from spade_query_symbols where name=\$intersect to stdout;" | ${cli}`
+  # local v_intersect_size = `echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
   
-  if [ $v_intersect_size -eq 0 ]; then
-    echo "nomerge"  
-    return
-  fi
+  # if [ $v_intersect_size -eq 0 ]; then
+  #   echo "nomerge"  
+  #   return
+  # fi
 
-  local x_table_name = `echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
-  local y_table_name = `echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
+  # local x_table_name = `echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
+  # local y_table_name = `echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
   
-  local v_x_size = `echo "copy select count(*) from ${x_table_name}_vertex to stdout;" | ${cli}`
-  local v_y_size = `echo "copy select count(*) from ${y_table_name}_vertex to stdout;" | ${cli}`
+  # local v_x_size = `echo "copy select count(*) from ${x_table_name}_vertex to stdout;" | ${cli}`
+  # local v_y_size = `echo "copy select count(*) from ${y_table_name}_vertex to stdout;" | ${cli}`
   
-  local check1 = 0
-  local check2 = 0
+  # local check1 = 0
+  # local check2 = 0
   
-  if [ $v_x_size -eq $v_intersect_size ]; then
-    send_spade_command("\$difference1 = \$${subgraph}_${x} -  \$intersect")
-    check1 = 1
-  fi
+  # if [ $v_x_size -eq $v_intersect_size ]; then
+  #   send_spade_command("\$difference1 = \$${subgraph}_${x} -  \$intersect")
+  #   check1 = 1
+  # fi
 
-  if [ $v_y_size -eq $v_intersect_size ]; then
-    send_spade_command("\$difference2 = \$${subgraph}_${y} -  \$intersect")
-    check2 = 1
-  fi
+  # if [ $v_y_size -eq $v_intersect_size ]; then
+  #   send_spade_command("\$difference2 = \$${subgraph}_${y} -  \$intersect")
+  #   check2 = 1
+  # fi
 
-  if [ $check1 -eq 1 ]; then
-    local diff1_table_name = `echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
-    local v_diff1_size = `echo "copy select count(*) from ${diff1_table_name}_vertex to stdout;" | ${cli}`
-    local e_diff1_size = `echo "copy select count(*) from ${diff1_table_name}_edge to stdout;" | ${cli}`
-    if [ $v_diff1_size -eq 0 ] && [ $e_diff1_size -eq 0 ]; then
-        echo "mergex"
-        return
-    fi
-  fi
+  # if [ $check1 -eq 1 ]; then
+  #   local diff1_table_name = `echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
+  #   local v_diff1_size = `echo "copy select count(*) from ${diff1_table_name}_vertex to stdout;" | ${cli}`
+  #   local e_diff1_size = `echo "copy select count(*) from ${diff1_table_name}_edge to stdout;" | ${cli}`
+  #   if [ $v_diff1_size -eq 0 ] && [ $e_diff1_size -eq 0 ]; then
+  #       echo "mergex"
+  #       return
+  #   fi
+  # fi
 
-  if [ $check2 -eq 1 ]; then
-    local diff2_table_name = `echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
-    local v_diff2_size = `echo "copy select count(*) from ${diff2_table_name}_vertex to stdout;" | ${cli}`
-    local e_diff2_size = `echo "copy select count(*) from ${diff2_table_name}_edge to stdout;" | ${cli}`
-    if [ $v_diff2_size -eq 0 ] && [ $e_diff2_size -eq 0 ]; then
-        echo "mergey"
-        return
-    fi
-  fi
+  # if [ $check2 -eq 1 ]; then
+  #   local diff2_table_name = `echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
+  #   local v_diff2_size = `echo "copy select count(*) from ${diff2_table_name}_vertex to stdout;" | ${cli}`
+  #   local e_diff2_size = `echo "copy select count(*) from ${diff2_table_name}_edge to stdout;" | ${cli}`
+  #   if [ $v_diff2_size -eq 0 ] && [ $e_diff2_size -eq 0 ]; then
+  #       echo "mergey"
+  #       return
+  #   fi
+  # fi
 
-  echo "nomerge"  
+  # echo "nomerge"  
 }
 
 main() {
