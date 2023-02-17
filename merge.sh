@@ -45,12 +45,13 @@ merge() {
   local z="echo \"copy select value from spade_query_symbols where name=\$intersect to stdout;\""
   echo "$z"
   local intersect_table_name="echo \"copy select value from spade_query_symbols where name=\$intersect to stdout;\" | ${cli}"
-  # local v_intersect_size=`echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
+  local v_intersect_size="echo \"copy select count(*) from ${intersect_table_name}_vertex to stdout;\" | ${cli}"
   
-  # if [ $v_intersect_size -eq 0 ]; then
-  #   echo "nomerge"  
-  #   return
-  # fi
+  echo "$intersect_table_name $v_intersect_size"
+  if [ $v_intersect_size -eq 0 ]; then
+    echo "nomerge"  
+    return
+  fi
 
   # local x_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
   # local y_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
