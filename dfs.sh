@@ -52,20 +52,33 @@ send_spade_command(){
 }
 
 
+erase(){
+  local count="${1}"
+  send_spade_command "erase \$$count"
+  send_spade_command "erase \$lineage_$count"
+  send_spade_command "erase \$vertices_$count"
+  send_spade_command "erase \$parents_$count"
+  send_spade_command "erase \$skeleton_$count"
+  # send_spade_command "erase \$subgraph_$count"
+
+}
+
 
 dfs_runner(){
     local uuid="${1}"
     local count="${2}"
     echo "UUID: $uuid"
     echo "count : $count" 
-    # send_spade_command "%$count = \"uuid\"=='$uuid'" #uuid
-    # send_spade_command "\$$count = \$base.getVertex(%$count)" #getVertex
-    # send_spade_command "\$lineage_$count = \$base.getLineage(\$$count, 5,'d')" #$lineage 
-    # send_spade_command "\$vertices_$count = \$lineage_$count.getVertex()" #vertexset
-    # send_spade_command "\$parents_$count = \$base.getNeighbor(\$vertices_$count, 'a')" #parents
-    # send_spade_command "\$skeleton_$count = \$lineage_$count + \$parents_$count"  #union
-    # send_spade_command "\$subgraph_$count = \$base.getSubgraph(\$skeleton_$count)" #getsubgraph
+    send_spade_command "%$count = \"uuid\"=='$uuid'" #uuid
+    send_spade_command "\$$count = \$base.getVertex(%$count)" #getVertex
+    send_spade_command "\$lineage_$count = \$base.getLineage(\$$count, 5,'d')" #$lineage 
+    send_spade_command "\$vertices_$count = \$lineage_$count.getVertex()" #vertexset
+    send_spade_command "\$parents_$count = \$base.getNeighbor(\$vertices_$count, 'a')" #parents
+    send_spade_command "\$skeleton_$count = \$lineage_$count + \$parents_$count"  #union
+    send_spade_command "\$subgraph_$count = \$base.getSubgraph(\$skeleton_$count)" #getsubgraph
     # send_spade_command "\$dfs_$count = \$subgraph_$count.transform(TemporalTraversalPrime, \"order=timestamp\", \$$count, 'd')" #transformer
+    erase $count
+
 }
 
 

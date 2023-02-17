@@ -8,7 +8,7 @@ symbols="./spadesymbols.txt"
 subgraph="dfs"
 
 
-echo "copy select * from spade_query_symbols to '/home/vagrant/spadesymbols.txt' with (delimiter ',');" | ./manage-quickstep.sh start --path /home/vagrant/quickstepdb -c
+# echo "copy select * from spade_query_symbols to '/home/vagrant/spadesymbols.txt' with (delimiter ',');" | ./manage-quickstep.sh start --path /home/vagrant/quickstepdb -c
 
 is_spade_running(){
     "${spade_bin}" status | grep -q "Running"    
@@ -97,7 +97,6 @@ main() {
   x=${nums[0]}
   for i in "${nums[@]:1}"; do
     echo "$x $i"
-    echo "ezez"
     local result = $(merge ${x} ${i})
   done
     done < ${merge_file}
