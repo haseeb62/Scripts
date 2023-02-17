@@ -42,7 +42,7 @@ merge() {
   echo "x"
   echo "y"
   send_spade_command "\$intersect_$x$y = \$${subgraph}_$x &  \$${subgraph}_$y"
-  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
+  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
   
   echo "ez1=$z"
   local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli})
