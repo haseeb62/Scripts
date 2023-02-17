@@ -40,8 +40,8 @@ merge() {
   local x="${1}"
   local y="${2}"
   send_spade_command "\$intersect = \$${subgraph}_$x &  \$${subgraph}_$y"
-  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
-  echo "ez1=$z"
+  # local z=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
+  # echo "ez1=$z"
   local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1)
   local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}| tail -n 1)
 
@@ -67,15 +67,29 @@ merge() {
   # local check1=0
   # local check2=0
   
-  # if [ $v_x_size -eq $v_intersect_size ]; then
-  #   send_spade_command "\$difference1 = \$${subgraph}_${x} - \$intersect"
-  #   check1 = 1
-  # fi
+  if [ $v_x_size -eq $v_intersect_size ]; then
+    send_spade_command "\$difference = \$${subgraph}_${x} - \$intersect"
+    local diff1_table_name=$(echo "copy select value from spade_query_symbols where name='\$difference' to stdout;" | ${cli} | tail -n 1)
+    local v_diff1_size=$(echo "copy select count(*) from ${diff1_table_name}_vertex to stdout;" | ${cli} | tail -n 1)
+    local e_diff1_size=$(echo "copy select count(*) from ${diff1_table_name}_edge to stdout;" | ${cli} | tail -n 1)
+    echo "$diff1_table_name $v_diff1_size $e_diff1_size"
+    if [ $v_diff1_size -eq 0 ] && [ $e_diff1_size -eq 0 ]; then
+        echo "mergex"
+        return
+    fi
+  fi
 
-  # if [ $v_y_size -eq $v_intersect_size ]; then
-  #   send_spade_command "\$difference2 = \$${subgraph}_${y} -  \$intersect"
-  #   check2 = 1
-  # fi
+  if [ $v_y_size -eq $v_intersect_size ]; then
+    send_spade_command "\$difference = \$${subgraph}_${y} -  \$intersect"
+    check2 = 1
+    #   local diff2_table_name=`echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
+  #   local v_diff2_size=`echo "copy select count(*) from ${diff2_table_name}_vertex to stdout;" | ${cli}`
+  #   local e_diff2_size=`echo "copy select count(*) from ${diff2_table_name}_edge to stdout;" | ${cli}`
+  #   if [ $v_diff2_size -eq 0 ] && [ $e_diff2_size -eq 0 ]; then
+  #       echo "mergey"
+  #       return
+  #   fi
+  fi
 
   # if [ $check1 -eq 1 ]; then
   #   local diff1_table_name=`echo "copy select value from spade_query_symbols where name=\$difference1 to stdout;" | ${cli}`
