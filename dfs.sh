@@ -56,14 +56,20 @@ send_spade_command(){
 
 erase(){
   local count="${1}"
-  send_spade_command "erase \$$count"
-  send_spade_command "erase \$lineage_$count"
-  send_spade_command "erase \$vertices_$count"
-  send_spade_command "erase \$parents_$count"
-  send_spade_command "erase \$skeleton_$count"
+  qeury_writer "erase \$$count"
+  qeury_writer "erase \$lineage_$count"
+  qeury_writer "erase \$vertices_$count"
+  qeury_writer "erase \$parents_$count"
+  qeury_writer "erase \$skeleton_$count"
   # send_spade_command "erase \$subgraph_$count"
 
 }
+
+qeury_writer(){
+  query="${1}"
+  echo $query >> $query_file 
+}
+
 
 
 dfs_runner2(){
@@ -71,13 +77,13 @@ dfs_runner2(){
   local count="${2}"
   echo "UUID: $uuid"
   echo "count : $count" 
-  echo "%$count = \"uuid\"=='$uuid'" >> $query_file #uuid
-  echo "\$$count = \$base.getVertex(%$count)" >> $query_file #getVertex
-  echo "\$lineage_$count = \$base.getLineage(\$$count, 5,'d')" >> $query_file #$lineage 
-  echo "\$vertices_$count = \$lineage_$count.getVertex()" >> $query_file #vertexset
-  echo "\$parents_$count = \$base.getNeighbor(\$vertices_$count, 'a')" >> $query_file #parents
-  echo "\$skeleton_$count = \$lineage_$count + \$parents_$count"  >> $query_file #union
-  echo "\$subgraph_$count = \$base.getSubgraph(\$skeleton_$count)" >> $query_file #getsubgraph
+  qeury_writer "%$count = \"uuid\"=='$uuid'"  #uuid
+  qeury_writer "\$$count = \$base.getVertex(%$count)"  #getVertex
+  qeury_writer "\$lineage_$count = \$base.getLineage(\$$count, 5,'d')"  #$lineage 
+  qeury_writer "\$vertices_$count = \$lineage_$count.getVertex()"  #vertexset
+  qeury_writer "\$parents_$count = \$base.getNeighbor(\$vertices_$count, 'a')"  #parents
+  qeury_writer "\$skeleton_$count = \$lineage_$count + \$parents_$count"   #union
+  qeury_writer "\$subgraph_$count = \$base.getSubgraph(\$skeleton_$count)"  #getsubgraph
   # send_spade_command "\$dfs_$count = \$subgraph_$count.transform(TemporalTraversalPrime, \"order=timestamp\", \$$count, 'd')" #transformer
   erase $count
 }
