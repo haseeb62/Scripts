@@ -41,12 +41,16 @@ merge() {
   local y="${2}"
   echo "x"
   echo "y"
-  # send_spade_command "\$intersect = \$${subgraph}_$x &  \$${subgraph}_$y"
-  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli})
-  # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
-  echo "$z"
-  # local intersect_table_name="echo \"copy select value from spade_query_symbols where name=\$intersect to stdout;\" | ${cli}"
-  # local v_intersect_size="echo \"copy select count(*) from ${intersect_table_name}_vertex to stdout;\" | ${cli}"
+  send_spade_command "\$intersect_$x$y = \$${subgraph}_$x &  \$${subgraph}_$y"
+  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
+  
+  echo "ez1=$z"
+  local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli})
+  local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli})
+
+
+  echo "ez2=$intersect_table_name"
+  echo "ez3=$v_intersect_size"
   
   # echo "$intersect_table_name $v_intersect_size"
   # if [ $v_intersect_size -eq 0 ]; then
