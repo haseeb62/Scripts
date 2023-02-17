@@ -55,10 +55,10 @@ merge() {
     return
   fi
 
-  local x_table_name=$(echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}| tail -n 1)
+  local x_table_name=$(echo "copy select value from spade_query_symbols where name='\$${subgraph}_${x}' to stdout;" | ${cli}| tail -n 1)
   # $(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1)
 
-  local y_table_name=$(echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli} | tail -n 1)
+  local y_table_name=$(echo "copy select value from spade_query_symbols where name='\$${subgraph}_${y}' to stdout;" | ${cli} | tail -n 1)
   
   local v_x_size=$(echo "copy select count(*) from ${x_table_name}_vertex to stdout;" | ${cli} | tail -n 1)
   local v_y_size=$(echo "copy select count(*) from ${y_table_name}_vertex to stdout;" | ${cli} | tail -n 1)
