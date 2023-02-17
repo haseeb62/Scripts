@@ -5,7 +5,7 @@ Object_id_file_path="/home/vagrant/ObjectIDs"
 merge_file="./merging_vertex.txt"
 cli="./SPADE/bin/manage-quickstep.sh start --path /home/vagrant/quickstepdb -c"
 symbols="./spadesymbols.txt"
-subgraph="dfs"
+subgraph="subgraph"
 
 
 # echo "copy select * from spade_query_symbols to '/home/vagrant/spadesymbols.txt' with (delimiter ',');" | ./manage-quickstep.sh start --path /home/vagrant/quickstepdb -c
@@ -41,10 +41,10 @@ merge() {
   local y = "${2}"
   echo "x"
   echo "y"
-  send_spade_command("\$intersect = \$${subgraph}_${x} &  \$${subgraph}_${y}")
+  send_spade_command "\$intersect = \$${subgraph}_${x} &  \$${subgraph}_${y}"
 
-  # local intersect_table_name = `echo "copy select value from spade_query_symbols where name=\$intersect to stdout;" | ${cli}`
-  # local v_intersect_size = `echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
+  local intersect_table_name = `echo "copy select value from spade_query_symbols where name=\$intersect to stdout;" | ${cli}`
+  local v_intersect_size = `echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}`
   
   # if [ $v_intersect_size -eq 0 ]; then
   #   echo "nomerge"  
