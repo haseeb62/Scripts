@@ -39,11 +39,8 @@ send_spade_command(){
 merge() {
   local x="${1}"
   local y="${2}"
-  echo "x"
-  echo "y"
   send_spade_command "\$intersect_$x$y = \$${subgraph}_$x &  \$${subgraph}_$y"
-  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
-  
+  local z=$(echo "copy select value from spade_query_symbols where name='\$intersect' to stdout;" | ${cli}| tail -n 1) # copy select value from spade_query_symbols where name='\$intersect0' to stdout;
   echo "ez1=$z"
   local intersect_table_name=$(echo "copy select value from spade_query_symbols where name='\$intersect_$x$y' to stdout;" | ${cli}| tail -n 1)
   local v_intersect_size=$(echo "copy select count(*) from ${intersect_table_name}_vertex to stdout;" | ${cli}| tail -n 1)
@@ -53,10 +50,10 @@ merge() {
   echo "ez3=$v_intersect_size"
   
   # echo "$intersect_table_name $v_intersect_size"
-  # if [ $v_intersect_size -eq 0 ]; then
-  #   echo "nomerge"  
-  #   return
-  # fi
+  if [ $v_intersect_size -eq 0 ]; then
+    echo "nomerge"  
+    return
+  fi
 
   # local x_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
   # local y_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
@@ -68,12 +65,12 @@ merge() {
   # local check2=0
   
   # if [ $v_x_size -eq $v_intersect_size ]; then
-  #   send_spade_command("\$difference1 = \$${subgraph}_${x} - \$intersect")
+  #   send_spade_command "\$difference1 = \$${subgraph}_${x} - \$intersect"
   #   check1 = 1
   # fi
 
   # if [ $v_y_size -eq $v_intersect_size ]; then
-  #   send_spade_command("\$difference2 = \$${subgraph}_${y} -  \$intersect")
+  #   send_spade_command "\$difference2 = \$${subgraph}_${y} -  \$intersect"
   #   check2 = 1
   # fi
 
@@ -96,6 +93,10 @@ merge() {
   #       return
   #   fi
   # fi
+
+  send_spade_command "erase \$intersect"
+  # send_spade_command "erase \$difference1"
+  # send_spade_command "erase \$difference2" 
 
   echo "nomerge"  
 }
