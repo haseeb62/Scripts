@@ -42,16 +42,16 @@ merge() {
   echo "x"
   echo "y"
   send_spade_command "\$intersect = \$${subgraph}_$x &  \$${subgraph}_$y"
-  local z=$(echo "\"copy select value from spade_query_symbols where name=\$intersect to stdout;\"")
+  local z=$(echo "\"copy select value from spade_query_symbols where name=\$intersect to stdout;\"" | ${cli})
   echo "$z"
-  local intersect_table_name="echo \"copy select value from spade_query_symbols where name=\$intersect to stdout;\" | ${cli}"
-  local v_intersect_size="echo \"copy select count(*) from ${intersect_table_name}_vertex to stdout;\" | ${cli}"
+  # local intersect_table_name="echo \"copy select value from spade_query_symbols where name=\$intersect to stdout;\" | ${cli}"
+  # local v_intersect_size="echo \"copy select count(*) from ${intersect_table_name}_vertex to stdout;\" | ${cli}"
   
-  echo "$intersect_table_name $v_intersect_size"
-  if [ $v_intersect_size -eq 0 ]; then
-    echo "nomerge"  
-    return
-  fi
+  # echo "$intersect_table_name $v_intersect_size"
+  # if [ $v_intersect_size -eq 0 ]; then
+  #   echo "nomerge"  
+  #   return
+  # fi
 
   # local x_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${x} to stdout;" | ${cli}`
   # local y_table_name=`echo "copy select value from spade_query_symbols where name=\$${subgraph}_${y} to stdout;" | ${cli}`
