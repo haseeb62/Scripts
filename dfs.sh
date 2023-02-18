@@ -55,7 +55,7 @@ send_spade_command(){
 erase(){
   local count="${1}"
   qeury_writer "erase %$count"
-  qeury_writer "erase \$$count"
+  # qeury_writer "erase \$$count"
   qeury_writer "erase \$lineage_$count"
   qeury_writer "erase \$vertices_$count"
   qeury_writer "erase \$parents_$count"
@@ -84,7 +84,7 @@ dfs_runner(){
   qeury_writer "\$parents_$count = \$base.getNeighbor(\$vertices_$count, 'a')"  #parents
   qeury_writer "\$skeleton_$count = \$lineage_$count + \$parents_$count"   #union
   qeury_writer "\$subgraph_$count = \$base.getSubgraph(\$skeleton_$count)"  #getsubgraph
-  # send_spade_command "\$dfs_$count = \$subgraph_$count.transform(TemporalTraversalPrime, \"order=timestamp\", \$$count, 'd')" #transformer
+  send_spade_command "\$dfs_$count = \$subgraph_$count.transform(TemporalTraversalPrime, \"order=timestamp\", \$$count, 'd')" #transformer
   erase $count
 }
 
