@@ -1,0 +1,9 @@
+n 6
+c 7
+A C 3
+A B 4
+B C 7
+C D 8
+E F 5
+B F 2
+B E 1
